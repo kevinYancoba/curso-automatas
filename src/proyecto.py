@@ -112,7 +112,7 @@ class VentanaPrincipal:
             tokens = lineas.split()
             for index in tokens:
                 self.Cuadro_Tokens.insert(tk.END, f"{index},")
-            self.Cuadro_Tokens.insert(tk.END, f"\n")
+            self.Cuadro_Tokens.insert(tk.END, "\n")
 
     def automata(self, parametro):
         estado = 1
@@ -170,6 +170,7 @@ class VentanaPrincipal:
 
 
     def automata_identificadores(self, parametro):
+
         minusculas = "abcdefghijklmnopqrstuvwxyz"
         mayusculas = minusculas.upper()
 
@@ -197,10 +198,97 @@ class VentanaPrincipal:
                     estado = 3
                 else:
                     return True
+                
         if estado != 3:
             return True
         else:
             return False
+        
+    def automata_decimales(self, parametro):
+        estado = 0
+        for index in parametro:
+            if estado == 0:
+                if index == '0':
+                    estado = 1
+                elif index > '0':
+                    estado = 5
+                elif index == '.':
+                    estado = 6
+                else:
+                    return True
+                
+            elif estado == 1:
+                if '0' <= index <= '7':
+                    estado = 8
+                elif index in ['x', 'X']:
+                    estado = 2
+                elif index == '.':
+                    estado = 6
+                else:
+                    return True
+                
+            elif estado == 2:
+                if index in ['a','b','c','d','e','f']:
+                    estado = 3
+                elif index in ['A','B','C','D','E','F']:
+                    estado = 3
+                elif '0' <= index <= '9':
+                    estado = 3
+                else:
+                    return True
+                
+            elif estado == 3:
+                if index in ['a','b','c','d','e','f']:
+                    estado = 4
+                elif index in ['A','B','C','D','E','F']:
+                    estado = 4
+                elif '0' <= index <= '9':
+                    estado = 4
+                else:
+                    return True
+                               
+            elif estado == 4:
+                if index in ['a','b','c','d', 'e','f']:
+                    estado = 3
+                elif index in ['A','B','C','D','E','F']:
+                    estado = 3
+                elif '0' <= index <= '9':
+                    estado = 3
+                else:
+                    return True
+                
+            elif estado == 5:
+                if '0' <= index <= '9':
+                    estado = 5
+                elif index == '.':
+                    estado = 6
+                else:
+                    return True
+                
+            elif estado == 6:
+                if '0' <= index <= '9':
+                    estado = 7
+                else:
+                    return True
+                
+            elif estado == 7:
+                if '0' <= index <= '9':
+                    estado = 7
+                else:
+                    return True
+                
+            elif estado == 8:
+                if '0' <= index <= '7':
+                    estado = 8
+                else:
+                    return True
+        
+        if estado != 8 or estado != 5 or estado != 7 or estado != 4:
+            return True
+        else:
+            return False
+
+
 
 
     def clasificar_tokens(self):
@@ -259,8 +347,7 @@ class VentanaPrincipal:
                     else:
                         self.Cuadro_Tokens.insert(tk.END, f" ⫺ Id: {index},")
                         self.Cuadro_Texto_Horizontal.insert(tk.END, f"❎ linea {i} automata Id: {index}\n")
-
-            self.Cuadro_Tokens.insert(tk.END, f"\n")
+            self.Cuadro_Tokens.insert(tk.END, "\n")
 
 if __name__ == "__main__":
     root = tk.Tk()
